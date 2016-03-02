@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
-
+#include <unistd.h>
 #include IMPL
 
 #define DICT_FILE "./dictionary/words.txt"
@@ -23,6 +23,8 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
 
 int main(int argc, char *argv[])
 {
+    printf("pid: %d\n", getpid());
+    //sleep(10);
     FILE *fp;
     int i = 0;
     char line[MAX_LAST_NAME_SIZE];
