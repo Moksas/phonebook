@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     //PHONEBOOK.printnode();
     assert( PHONEBOOK.findName(input, e) &&
             "Did you implement findName() in " IMPL "?");
-
+    PHONEBOOK.backtohead();
     assert(0 == strcmp(PHONEBOOK.findName(input, e)->lastName, "zyxel"));
 #else
     e = pHead;
@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
 #if defined(OPT)
+    PHONEBOOK.backtohead();
     PHONEBOOK.findName(input, e);
 #else
     findName(input, e);

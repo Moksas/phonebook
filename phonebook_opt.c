@@ -7,10 +7,11 @@
 
 static int ASCII_ENG_CHAR_START = 96 ;//not use 97  to vaoid 0 which  present NULL in ASCII
 static int COMPRESS_CHAR_BITS =5;
-static int ORIGIN_CHAR_BITS =5;
+static int ORIGIN_CHAR_BITS =8;
 static inline unsigned long hash_func_djb2(char *lastname)
 {
-    unsigned long key;
+    unsigned long key=5381;
+
     int lastname_length = strlen(lastname);
     for(int i = 0 ; i < lastname_length ; i++) {
         key = ((key<<5) + key ) +lastname[i];
@@ -90,22 +91,23 @@ entry *findName(char lastname[], entry *pHead[])
 {
     /* TODO: implement */
     //compress( lastname, lastname);
-    char compresstmp[COMPRESS_MAX_LAST_NAME_SIZE];
-    char decompresstmp[MAX_LAST_NAME_SIZE];
-    compress( lastname, compresstmp);
-    unsigned int key = hash_func_djb2(compresstmp)%BUCKET_SIZE;
-    entry  *Return_entry= (entry *) malloc(sizeof(entry));
+    //char compresstmp[COMPRESS_MAX_LAST_NAME_SIZE];
+//   char decompresstmp[MAX_LAST_NAME_SIZE];
+    //compress( lastname, compresstmp);
+    unsigned int key = hash_func_djb2(lastname)%BUCKET_SIZE;
+
+    //entry  *Return_entry= (entry *) malloc(sizeof(entry));
     entry *node = pHead[key];
     while (node != NULL) {
 
-        if (strcasecmp(compresstmp, node->lastName) == 0) {
+        if (strcasecmp(lastname, node->lastName) == 0) {
 
 
-            decompress(node->lastName,decompresstmp);
+            //   decompress(node->lastName,decompresstmp);
 
-            strcpy(Return_entry->lastName, decompresstmp);
-            Return_entry->pNext=node->pNext;
-            return Return_entry;
+            //    strcpy(Return_entry->lastName, decompresstmp);
+            //   Return_entry->pNext=node->pNext;
+            return node;
         }
 
 
@@ -117,14 +119,14 @@ entry *findName(char lastname[], entry *pHead[])
 
 void *append(char lastName[], entry *e[])
 {
-    char compresstmp[COMPRESS_MAX_LAST_NAME_SIZE];
-    compress(lastName,compresstmp);
-    unsigned int key = hash_func_djb2(compresstmp)%BUCKET_SIZE;
+    //char compresstmp[COMPRESS_MAX_LAST_NAME_SIZE];
+    //compress(lastName,compresstmp);
+    unsigned int key = hash_func_djb2(lastName)%BUCKET_SIZE;
 
-    // printf("%d////%s\n",key, compresstmp);
+    //  printf("%d////%s\n",key, lastName);
     e[key]->pNext = (entry *) malloc(sizeof(entry));
     e[key] = e[key]->pNext;
-    strcpy(e[key]->lastName, compresstmp);
+    strcpy(e[key]->lastName, lastName);
     e[key]->pNext = NULL;
     return NULL;
 }

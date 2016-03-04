@@ -2,8 +2,8 @@
 #define _PHONEBOOK_H
 
 #define MAX_LAST_NAME_SIZE 16
-#define COMPRESS_MAX_LAST_NAME_SIZE 10
-#define BUCKET_SIZE 10000
+#define COMPRESS_MAX_LAST_NAME_SIZE 16
+#define BUCKET_SIZE 128
 /* TODO: After modifying the original version, uncomment the following
  * line to set OPT properly */
 // #define OPT 1
@@ -21,7 +21,7 @@ typedef struct __PHONE_BOOK_ENTRY {
 
 } detail;
 typedef struct _LAST_NAME_ENTRY {
-    char  lastName[COMPRESS_MAX_LAST_NAME_SIZE];
+    char  lastName[MAX_LAST_NAME_SIZE];
     struct __PHONE_BOOK_ENTRY *detaildata;
     struct _LAST_NAME_ENTRY *pNext;
 } entry;
