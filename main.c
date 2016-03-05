@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 #if defined(OPT)
     PHONEBOOK.backtohead();
     //PHONEBOOK.printnode();
+    //PHONEBOOK.backtohead();
     assert( PHONEBOOK.findName(input, e) &&
             "Did you implement findName() in " IMPL "?");
     PHONEBOOK.backtohead();
@@ -85,17 +86,18 @@ int main(int argc, char *argv[])
 #endif
     /* the givn last name to find */
 
-    //e = pHead;
 
-
-
+#if defined(OPT)
+    PHONEBOOK.backtohead();
+#else
+    e = pHead;
+#endif
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
 #if defined(OPT)
-    PHONEBOOK.backtohead();
     PHONEBOOK.findName(input, e);
 #else
     findName(input, e);

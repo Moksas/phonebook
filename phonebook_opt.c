@@ -14,7 +14,7 @@ static inline unsigned long hash_func_djb2(char *lastname)
 
     int lastname_length = strlen(lastname);
     for(int i = 0 ; i < lastname_length ; i++) {
-        key = ((key<<5) + key ) +lastname[i];
+        key = ((key<<5) + key ) ^ lastname[i];
     }
     return key;
 }
@@ -90,23 +90,15 @@ static inline void decompress(char *input,char *output )
 entry *findName(char lastname[], entry *pHead[])
 {
     /* TODO: implement */
-    //compress( lastname, lastname);
-    //char compresstmp[COMPRESS_MAX_LAST_NAME_SIZE];
-//   char decompresstmp[MAX_LAST_NAME_SIZE];
-    //compress( lastname, compresstmp);
+
     unsigned int key = hash_func_djb2(lastname)%BUCKET_SIZE;
 
-    //entry  *Return_entry= (entry *) malloc(sizeof(entry));
     entry *node = pHead[key];
     while (node != NULL) {
 
         if (strcasecmp(lastname, node->lastName) == 0) {
 
 
-            //   decompress(node->lastName,decompresstmp);
-
-            //    strcpy(Return_entry->lastName, decompresstmp);
-            //   Return_entry->pNext=node->pNext;
             return node;
         }
 
@@ -119,11 +111,8 @@ entry *findName(char lastname[], entry *pHead[])
 
 void *append(char lastName[], entry *e[])
 {
-    //char compresstmp[COMPRESS_MAX_LAST_NAME_SIZE];
-    //compress(lastName,compresstmp);
-    unsigned int key = hash_func_djb2(lastName)%BUCKET_SIZE;
 
-    //  printf("%d////%s\n",key, lastName);
+    unsigned int key = hash_func_djb2(lastName)%BUCKET_SIZE;
     e[key]->pNext = (entry *) malloc(sizeof(entry));
     e[key] = e[key]->pNext;
     strcpy(e[key]->lastName, lastName);
@@ -146,17 +135,21 @@ void insertnode(char* lastname,entry *node[])
 void printnode()
 {
     int count=0;
-    char decompresstmp[MAX_LAST_NAME_SIZE];
-
+    int NULL_count=0;
     for(int i= 0; i<BUCKET_SIZE; i++) {
+        if(e[i]==NULL) {
+            printf("%d bucket is NULL\n",i );
+            NULL_count ++;
+        }
         while(e[i]!=NULL) {
-            decompress(e[i]->lastName,decompresstmp);
-            printf("node[%d]%s\n",i,decompresstmp );
+            //   printf("node[%d]%s\n",i,e[i]->lastName );
             e[i]=e[i]->pNext;
             count++;
         }
+        printf("%d bucket:%d\n",i,count );
+        count=0;
     }
-    printf("%d\n",count );
+    printf(" number of %d bucket is NULL\n",NULL_count );
 }
 void backtohead()
 {
